@@ -17,7 +17,7 @@ List<EventBrawlerStat> stats = Utils.GetBrawlerStatsFromBattles(battles, 1600002
 EventBrawlerStat stat = stats[0];
 
 Console.WriteLine($"Brawler ID {stat.Brawler} has {stat.GetUseRate(battles.Count)}% use rate, and {stat.GetWinRate()}% win rate in the map ID {stat.Map}."); //Brawler ID 16000020 has 3.87% use rate, and 31.03% win rate in the map ID 15000051.
-Console.WriteLine($"Brawler ID {stat.Brawler} has been used {stat.UseCount} times and have won {stat.WinCount} times in the map ID {stat.Map}.");//Brawler ID 16000020 has been used 73 times and have won 27 times in the map ID 15000051.
+Console.WriteLine($"Brawler ID {stat.Brawler} has been used {stat.UseCount} times and have won {stat.WinCount} times in the map ID {stat.Map}."); //Brawler ID 16000020 has been used 73 times and have won 27 times in the map ID 15000051.
 ```
 
 ## Support
