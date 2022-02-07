@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <PackageId>BrawlMatic.Tools.BrawlEvents</PackageId>
+    <Authors>Tweenky</Authors>
+    <Company>BrawlMatic</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>A powerful tracker for Brawl Stars that provides insights on battles, such as brawler usage and win rate.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/BrawlMatic/BrawlEvents</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BrawlMatic.API.BrawlSharp" Version="1.0.1" />
+  </ItemGroup>
+
+</Project>
