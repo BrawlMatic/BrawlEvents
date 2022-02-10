@@ -7,17 +7,23 @@ Install using the Package Manager Console in Visual Studio.
 Install-Package BrawlMatic.Tools.BrawlEvents
 ```
 
+## Dependencies
+- [BrawlSharp](https://github.com/BrawlMatic/BrawlSharp)
+
 ## Usage
 ```cs
 var client = new BrawlEventsClient("<token>");
     
-List<Battle> battles = await client.GetBattlesAsync(1500); //Gather data from 1500 recent battles around the game
-List<EventBrawlerStat> stats = Utils.GetBrawlerStatsFromBattles(battles, 16000020); //Parse stats from those previously fetched battles
+var battles = await client.GetBattlesAsync(1500); //Gather data from 1500 recent battles around the game
+var stats = Utils.GetBrawlerStatsFromBattles(battles, 16000020); //Parse stats from those previously fetched battles
 
-EventBrawlerStat stat = stats[0];
+var stat = stats[0];
 
-Console.WriteLine($"Brawler ID {stat.Brawler} has {stat.GetUseRate(battles.Count)}% use rate, and {stat.GetWinRate()}% win rate in the map ID {stat.Map}."); //Brawler ID 16000020 has 3.87% use rate, and 31.03% win rate in the map ID 15000051.
-Console.WriteLine($"Brawler ID {stat.Brawler} has been used {stat.UseCount} times and have won {stat.WinCount} times in the map ID {stat.Map}."); //Brawler ID 16000020 has been used 73 times and have won 27 times in the map ID 15000051.
+Console.WriteLine($"Brawler ID {stat.Brawler} has {stat.GetUseRate(battles.Count)}% use rate, and {stat.GetWinRate()}% win rate in the map ID {stat.Map}.");
+//Brawler ID 16000020 has 3.87% use rate, and 31.03% win rate in the map ID 15000051.
+
+Console.WriteLine($"Brawler ID {stat.Brawler} has been used {stat.UseCount} times and have won {stat.WinCount} times in the map ID {stat.Map}.");
+//Brawler ID 16000020 has been used 73 times and have won 27 times in the map ID 15000051.
 ```
 
 ## Support

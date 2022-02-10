@@ -1,4 +1,4 @@
-﻿using BrawlSharp.Model;
+﻿using BrawlSharp.Model.Player.BattleLog;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -6,9 +6,9 @@ namespace BrawlEvents
 {
     public class Utils
     {
-        public static List<BattlePlayer> GetPlayersFromBattle(Battle battle)
+        public static List<Player> GetPlayersFromBattle(Battle battle)
         {
-            List<BattlePlayer> players = new List<BattlePlayer>();
+            List<Player> players = new List<Player>();
 
             if (battle.Match.Players != null)
             {
@@ -44,7 +44,7 @@ namespace BrawlEvents
                 {
                     if (battle.Match.Players != null)
                     {
-                        foreach (BattlePlayer player in battle.Match.Players)
+                        foreach (Player player in battle.Match.Players)
                         {
                             if (player.Brawler.Id == brawler)
                                 matches.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
@@ -57,7 +57,7 @@ namespace BrawlEvents
                     {
                         foreach (var team in battle.Match.Teams)
                         {
-                            foreach (BattlePlayer player in team)
+                            foreach (Player player in team)
                             {
                                 if (player.Brawler.Id == brawler)
                                     matches.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);

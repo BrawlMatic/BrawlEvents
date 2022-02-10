@@ -1,5 +1,5 @@
 ﻿using BrawlSharp;
-using BrawlSharp.Model;
+using BrawlSharp.Model.Player.BattleLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ namespace BrawlEvents
 {
     public class BrawlEventsClient
     {
-        readonly BrawlAPI Client;
+        readonly BrawlSharpClient BrawlSharpClient;
 
         List<Battle> Battles;
 
@@ -27,7 +27,7 @@ namespace BrawlEvents
 
         public BrawlEventsClient(string token, int threads = 75, bool log = true, bool logErrors = false)
         {
-            Client = new BrawlAPI(token);
+            BrawlSharpClient = new BrawlSharpClient(token);
 
             Threads = threads;
             Log = log;
@@ -60,7 +60,7 @@ namespace BrawlEvents
 
             try
             {
-                PlayerBattleLog battleLog = await Client.GetPlayerBattleLogAsync(tag.Replace("#", ""));
+                BattleLog battleLog = await BrawlSharpClient.GetPlayerBattleLogAsync(tag.Replace("#", ""));
                 FetchedTags.Add(tag);
 
                 foreach (Battle battle in battleLog.Battles)
@@ -73,7 +73,7 @@ namespace BrawlEvents
 
                     if (!Battles.Contains(battle)) Battles.Add(battle);
 
-                    foreach (BattlePlayer player in Utils.GetPlayersFromBattle(battle))
+                    foreach (Player player in Utils.GetPlayersFromBattle(battle))
                     {
                         if (ShouldFetch(player.Tag, tries))
                             new Thread(() => FetchTag(player.Tag)).Start();
@@ -114,7 +114,7 @@ namespace BrawlEvents
                 new Thread(() => FetchTag(genesisTag)).Start();
             else
             {
-                var lb = await Client.GetPlayerLeaderboardAsync();
+                var lb = await BrawlSharpClient.GetPlayerLeaderboardAsync();
                 new Thread(() => FetchTag(lb.Players[0].Tag)).Start();
             }
 
