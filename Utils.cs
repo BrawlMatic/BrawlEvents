@@ -33,7 +33,7 @@ namespace BrawlEvents
             return players;
         }
 
-        public static List<EventBrawlerStat> GetBrawlerStatsFromBattles(List<Battle> battles, int brawler)
+        public static List<Stat> GetBrawlerStatsFromBattles(List<Battle> battles, int brawler)
         {
             ConcurrentDictionary<int, int> matches = new ConcurrentDictionary<int, int>();
             ConcurrentDictionary<int, int> wins = new ConcurrentDictionary<int, int>();
@@ -70,14 +70,14 @@ namespace BrawlEvents
                 }
             }
 
-            List<EventBrawlerStat> stats = new List<EventBrawlerStat>();
+            List<Stat> stats = new List<Stat>();
 
             foreach (var map in matches)
             {
                 if (wins.TryGetValue(map.Key, out int winCount))
-                    stats.Add(new EventBrawlerStat(brawler, map.Key, map.Value, winCount));
+                    stats.Add(new Stat(brawler, map.Key, map.Value, winCount));
                 else
-                    stats.Add(new EventBrawlerStat(brawler, map.Key, map.Value, 0));
+                    stats.Add(new Stat(brawler, map.Key, map.Value, 0));
             }
 
             return stats;

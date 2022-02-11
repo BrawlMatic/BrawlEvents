@@ -2,14 +2,14 @@
 
 namespace BrawlEvents
 {
-    public class EventBrawlerStat
+    public class Stat
     {
         public int Brawler;
         public int Map;
         public int UseCount;
         public int WinCount;
 
-        public EventBrawlerStat(int brawler, int map, int useCount, int winCount)
+        public Stat(int brawler, int map, int useCount, int winCount)
         {
             Brawler = brawler;
             Map = map;
@@ -17,14 +17,14 @@ namespace BrawlEvents
             WinCount = winCount;
         }
 
-        public decimal GetWinRate()
+        public double GetWinRate()
         {
-            return Math.Round((decimal)WinCount / UseCount * 100, 2);
+            return Math.Round((double)WinCount / UseCount * 100, 2);
         }
 
-        public decimal GetUseRate(int battleCount)
+        public double GetUseRate(int battleCount)
         {
-            return Math.Round((decimal)UseCount / battleCount * 100, 2);
+            return Math.Round((double)UseCount / battleCount * 100, 2);
         }
     }
 }
