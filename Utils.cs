@@ -1,6 +1,7 @@
 ﻿using BrawlSharp.Model.Player.BattleLog;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BrawlEvents
 {
@@ -33,7 +34,7 @@ namespace BrawlEvents
             return players;
         }
 
-        public static List<Stat> GetBrawlerStatsFromBattles(List<Battle> battles, int brawler)
+        public static List<Stat> GetBrawlerStatsFromBattles(List<Battle> battles, int brawlerId)
         {
             ConcurrentDictionary<int, int> matches = new ConcurrentDictionary<int, int>();
             ConcurrentDictionary<int, int> wins = new ConcurrentDictionary<int, int>();
@@ -42,29 +43,48 @@ namespace BrawlEvents
             {
                 if (battle.Match.Type != "friendly" && battle.Map.Id != 0 && battle.Match.Mode != "duels")
                 {
+                    bool hasBrawler = false;
+
                     if (battle.Match.Players != null)
                     {
                         foreach (Player player in battle.Match.Players)
                         {
-                            if (player.Brawler.Id == brawler)
+                            if (player.Brawler.Id == brawlerId && !hasBrawler)
+                            {
+                                hasBrawler = true;
                                 matches.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
+                            } 
                         }
 
-                        if (battle.Match.Players[0].Brawler.Id == brawler)
+                        if (battle.Match.Players[0].Brawler.Id == brawlerId)
                             wins.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
                     }
                     else
                     {
                         foreach (var team in battle.Match.Teams)
                         {
-                            foreach (Player player in team)
+                            if (team.Any(p => p.Brawler.Id == brawlerId) && !hasBrawler)
                             {
-                                if (player.Brawler.Id == brawler)
-                                    matches.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
+                                hasBrawler = true;
+                                matches.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
                             }
                         }
 
-                        if (battle.Match.StarPlayer?.Brawler.Id == brawler)
+                        if (battle.Match.Mode == "duoShowdown")
+                        {
+                            bool hasBrawlerWin = false;
+
+                            foreach (Player player in battle.Match.Teams[0])
+                            {
+                                if (player.Brawler.Id == brawlerId && !hasBrawlerWin)
+                                {
+                                    hasBrawlerWin = true;
+                                    wins.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
+                                } 
+                            }
+                        }
+
+                        if (battle.Match.StarPlayer?.Brawler.Id == brawlerId)
                             wins.AddOrUpdate(battle.Map.Id, 1, (id, value) => value + 1);
                     }
                 }
@@ -75,9 +95,9 @@ namespace BrawlEvents
             foreach (var map in matches)
             {
                 if (wins.TryGetValue(map.Key, out int winCount))
-                    stats.Add(new Stat(brawler, map.Key, map.Value, winCount));
+                    stats.Add(new Stat(brawlerId, map.Key, map.Value, winCount));
                 else
-                    stats.Add(new Stat(brawler, map.Key, map.Value, 0));
+                    stats.Add(new Stat(brawlerId, map.Key, map.Value, 0));
             }
 
             return stats;
